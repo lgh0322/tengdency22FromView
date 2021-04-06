@@ -9,10 +9,12 @@ import android.view.View
 import androidx.core.content.ContextCompat
 
 class TendencyView : View{
+    private val diaPaint = Paint()
     private val wavePaint = Paint()
     private val gridPaint = Paint()
     private val CANVAS_W = getPixel(R.dimen.w)
     private val CANVAS_H = getPixel(R.dimen.h)
+    private val diaW = getPixel(R.dimen.dia_w)
     constructor(context: Context?) : super(context) {
         init()
     }
@@ -40,30 +42,49 @@ class TendencyView : View{
             style = Paint.Style.STROKE
             strokeWidth = getPixel(R.dimen.grid_w).toFloat()
         }
+
+        diaPaint.apply {
+            color = getColor(R.color.diaColor)
+            style = Paint.Style.FILL
+        }
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
+
         canvas.drawColor(getColor(R.color.white))
 
+        drawDia(canvas,diaPaint,50f,50f,diaW.toFloat())
         for(k in 0 until 2){
-            canvas.drawLine(0f,(k+1)*CANVAS_H.toFloat()/3,CANVAS_W.toFloat(),(k+1)*CANVAS_H.toFloat()/3,gridPaint)
+            canvas.drawLine(
+                0f,
+                (k + 1) * CANVAS_H.toFloat() / 3,
+                CANVAS_W.toFloat(),
+                (k + 1) * CANVAS_H.toFloat() / 3,
+                gridPaint
+            )
         }
 
         for(k in 0 until 6){
-            canvas.drawLine((k+1)*CANVAS_W.toFloat()/7,0f,(k+1)*CANVAS_W.toFloat()/7,CANVAS_H.toFloat(),gridPaint)
+            canvas.drawLine(
+                (k + 1) * CANVAS_W.toFloat() / 7,
+                0f,
+                (k + 1) * CANVAS_W.toFloat() / 7,
+                CANVAS_H.toFloat(),
+                gridPaint
+            )
         }
 
         var wavePath = Path()
         wavePath.moveTo(
-           0f,
-           0f
+            0f,
+            0f
         )
-        wavePath.lineTo(0f,CANVAS_H.toFloat())
-        wavePath.lineTo(CANVAS_W.toFloat(),CANVAS_H.toFloat())
-        wavePath.lineTo(CANVAS_W.toFloat(),0f)
-        wavePath.lineTo(0f,0f)
-        canvas.drawPath(wavePath,wavePaint)
+        wavePath.lineTo(0f, CANVAS_H.toFloat())
+        wavePath.lineTo(CANVAS_W.toFloat(), CANVAS_H.toFloat())
+        wavePath.lineTo(CANVAS_W.toFloat(), 0f)
+        wavePath.lineTo(0f, 0f)
+        canvas.drawPath(wavePath, wavePaint)
     }
     private fun getColor(resource_id: Int): Int {
         return ContextCompat.getColor(context, resource_id)
@@ -74,4 +95,20 @@ class TendencyView : View{
     override fun onMeasure(width: Int, height: Int) {
         setMeasuredDimension(CANVAS_W, CANVAS_H)
     }
+
+
+
+
+    private fun drawDia(canvas: Canvas, paint: Paint, x: Float, y: Float, width: Float) {
+        val halfWidth = width / 2
+        val path = Path()
+        path.moveTo(x, y + halfWidth) // Top
+        path.lineTo(x - halfWidth, y) // Left
+        path.lineTo(x, y - halfWidth) // Bottom
+        path.lineTo(x + halfWidth, y) // Right
+        path.lineTo(x, y + halfWidth) // Back to Top
+        path.close()
+        canvas.drawPath(path, paint)
+    }
+
 }

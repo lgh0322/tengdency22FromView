@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="myBlue">#FF27D6C0</color>
     <color name="myGray">#4dbdc2ce</color>
+    <color name="diaColor">#2D99FC</color>
 </resources>
