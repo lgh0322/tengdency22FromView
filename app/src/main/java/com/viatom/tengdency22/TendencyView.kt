@@ -69,7 +69,7 @@ class TendencyView : View{
         super.onDraw(canvas)
 
         canvas.drawColor(getColor(R.color.white))
-        drawDiaList(canvas,3, arrayListOf(150,230))
+        drawSysList(canvas,3, arrayListOf(150,230))
         drawDia(canvas,50f,50f)
         drawSys(canvas,150f,50f)
         for(k in 0 until 2){
@@ -128,6 +128,21 @@ class TendencyView : View{
 
     }
 
+
+    fun drawSysList(canvas: Canvas,i:Int,b:ArrayList<Int>){
+        if(b.size==0)return
+        val x=i*cW/7+cW/14
+        val halfWidth = diaW / 2
+        if(b.size!=1){
+            b.sort()
+            canvas.drawRect(RectF(x-halfWidth,b[0].toFloat(),x+halfWidth,b[b.size-1].toFloat()),sysShadowPaint)
+        }
+
+        for(k in b){
+            drawSys(canvas,x,k.toFloat())
+        }
+
+    }
 
 
     private fun drawDia(canvas: Canvas, x: Float, y: Float) {
