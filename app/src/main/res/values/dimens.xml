@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="w">700dp</dimen>
+    <dimen name="h">304dp</dimen>
+    <dimen name="grid_w">2dp</dimen>
+</resources>
