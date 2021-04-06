@@ -1,20 +1,23 @@
 package com.viatom.tengdency22
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.Path
+import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
 
 class TendencyView : View{
+    private val sysPaint = Paint()
+    private val sysShadowPaint = Paint()
     private val diaPaint = Paint()
+    private val diaShadowPaint = Paint()
     private val wavePaint = Paint()
     private val gridPaint = Paint()
     private val CANVAS_W = getPixel(R.dimen.w)
     private val CANVAS_H = getPixel(R.dimen.h)
-    private val diaW = getPixel(R.dimen.dia_w)
+    private val cH=CANVAS_H.toFloat()
+    private val cW=CANVAS_W.toFloat()
+    private val diaW = getPixel(R.dimen.dia_w).toFloat()
     constructor(context: Context?) : super(context) {
         init()
     }
@@ -47,14 +50,28 @@ class TendencyView : View{
             color = getColor(R.color.diaColor)
             style = Paint.Style.FILL
         }
+        diaShadowPaint.apply {
+            color = getColor(R.color.diaShadowColor)
+            style = Paint.Style.FILL
+        }
+        sysPaint.apply {
+            color = getColor(R.color.sysColor)
+            style = Paint.Style.FILL
+            isAntiAlias=true
+        }
+        sysShadowPaint.apply {
+            color = getColor(R.color.sysShadowColor)
+            style = Paint.Style.FILL
+        }
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
         canvas.drawColor(getColor(R.color.white))
-
-        drawDia(canvas,diaPaint,50f,50f,diaW.toFloat())
+        drawDiaList(canvas,3, arrayListOf(150,230))
+        drawDia(canvas,50f,50f)
+        drawSys(canvas,150f,50f)
         for(k in 0 until 2){
             canvas.drawLine(
                 0f,
@@ -96,11 +113,25 @@ class TendencyView : View{
         setMeasuredDimension(CANVAS_W, CANVAS_H)
     }
 
+    fun drawDiaList(canvas: Canvas,i:Int,b:ArrayList<Int>){
+        if(b.size==0)return
+        val x=i*cW/7+cW/14
+        val halfWidth = diaW / 2
+        if(b.size!=1){
+           b.sort()
+            canvas.drawRect(RectF(x-halfWidth,b[0].toFloat(),x+halfWidth,b[b.size-1].toFloat()),diaShadowPaint)
+        }
+
+        for(k in b){
+            drawDia(canvas,x,k.toFloat())
+        }
+
+    }
 
 
 
-    private fun drawDia(canvas: Canvas, paint: Paint, x: Float, y: Float, width: Float) {
-        val halfWidth = width / 2
+    private fun drawDia(canvas: Canvas, x: Float, y: Float) {
+        val halfWidth = diaW / 2
         val path = Path()
         path.moveTo(x, y + halfWidth) // Top
         path.lineTo(x - halfWidth, y) // Left
@@ -108,7 +139,12 @@ class TendencyView : View{
         path.lineTo(x + halfWidth, y) // Right
         path.lineTo(x, y + halfWidth) // Back to Top
         path.close()
-        canvas.drawPath(path, paint)
+        canvas.drawPath(path, diaPaint)
+    }
+
+    private fun drawSys(canvas: Canvas,  x: Float, y: Float) {
+        val halfWidth = diaW / 2
+        canvas.drawCircle(x,y,halfWidth,sysPaint)
     }
 
 }

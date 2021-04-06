@@ -10,4 +10,7 @@
     <color name="myBlue">#FF27D6C0</color>
     <color name="myGray">#4dbdc2ce</color>
     <color name="diaColor">#2D99FC</color>
+    <color name="sysColor">#2BD8C4</color>
+    <color name="diaShadowColor">#4d2d99fc</color>
+    <color name="sysShadowColor">#4d2bd8c4</color>
 </resources>
