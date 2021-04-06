@@ -69,7 +69,7 @@ class TendencyView : View{
         super.onDraw(canvas)
 
         canvas.drawColor(getColor(R.color.white))
-        drawSysList(canvas,3, arrayListOf(150,230))
+        drawSysList(canvas,3, arrayListOf(100,80,150))
         drawDia(canvas,50f,50f)
         drawSys(canvas,150f,50f)
         for(k in 0 until 2){
@@ -113,7 +113,8 @@ class TendencyView : View{
         setMeasuredDimension(CANVAS_W, CANVAS_H)
     }
 
-    fun drawDiaList(canvas: Canvas,i:Int,b:ArrayList<Int>){
+    fun drawDiaList(canvas: Canvas,i:Int,b1:ArrayList<Int>){
+        val b=virL2RealL(b1)
         if(b.size==0)return
         val x=i*cW/7+cW/14
         val halfWidth = diaW / 2
@@ -129,7 +130,8 @@ class TendencyView : View{
     }
 
 
-    fun drawSysList(canvas: Canvas,i:Int,b:ArrayList<Int>){
+    fun drawSysList(canvas: Canvas,i:Int,b1:ArrayList<Int>){
+        val b=virL2RealL(b1)
         if(b.size==0)return
         val x=i*cW/7+cW/14
         val halfWidth = diaW / 2
@@ -162,4 +164,15 @@ class TendencyView : View{
         canvas.drawCircle(x,y,halfWidth,sysPaint)
     }
 
+    fun vir2Real(f:Float):Float{
+        return cH-(f-50f)/150f*cH
+    }
+
+    fun virL2RealL(a:ArrayList<Int>):ArrayList<Int>{
+        val b= ArrayList<Int> ()
+        for(k in a){
+            b.add(vir2Real(k.toFloat()).toInt())
+        }
+        return b
+    }
 }
